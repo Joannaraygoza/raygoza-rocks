@@ -1,0 +1,42 @@
+"""class item():
+	#Not sure if a class is the best way to do this
+	subtotal = 0
+	
+	def __init__(self, nombre, cuesta, fecha):
+		self.nombre = nombre
+		self.cuesta = cuesta
+		self.fecha = fecha
+		
+	def __str__(self):
+		return f"{self.nombre}    {self.cuesta:.2f}    {self.fecha}"
+"""	
+
+recuento = 0
+entrada = 0
+subtotal = 0
+lista = []
+
+with open('cuenta.txt', 'w') as archivo:
+	archivo.write('Item       Cuesta       Fecha       Subtotal \n')
+	
+	while recuento < 10 and entrada != 'parar':
+		print("""Por favor, entras el nombre, cuesta, y fecha de 
+			comprar por cada item. Si has terminado, entras 'parar'.""")
+		nombre = (input("Nombre del item: ")).lower()
+		if nombre == 'parar':
+			break
+		nombre = nombre[0].upper() + nombre[1:]
+		cuesta = float(input("Cuesta del item: "))
+		fecha = input("Fecha de comprar: ")
+		subtotal += cuesta
+		item = f'{nombre}     {cuesta:.2f}     {fecha}     {subtotal:.2f} \n'
+		print('------------')
+		archivo.write(item)
+		recuento += 1
+
+	impuesto = subtotal * 0.1025
+	gran_total = subtotal + impuesto
+	archivo.write(f'\nTienes {recuento} items.\n')
+	archivo.write(f'El impuesto a las ventas de tu compra es {impuesto}.\n')
+	archivo.write(f'El gran total de tu cuenta es {gran_total}.\n')
+	archivo.write(f'Gracias por comprar con nosotros.')
