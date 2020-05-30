@@ -7,45 +7,56 @@ and at the end it will calculate the sales tax and grand total;
 these will also be written to the text file.
 """
 
-recuento = 0
-entrada = 0
+count = 0
+item_name = None
 subtotal = 0
-lista = []
+item_list = []
 
-with open('cuenta.txt', 'w') as archivo:
-	archivo.write('Item          Cuesta        Fecha      Subtotal \n')
-	
-	while recuento < 10 and entrada != 'parar':
-		print('''Por favor, entras el nombre, cuesta, y fecha de comprar por cada item. Si has terminado, entras 'parar'.''')
-	
-		nombre = (input("Nombre del item: ")).lower()
-		if nombre == 'parar':
-			break
-		nombre = nombre[0].upper() + nombre[1:]
-		cuesta = float(input("Cuesta del item: "))
-		fecha = input("Fecha de comprar: ")
-		subtotal += cuesta
-		str_cuesta = f'{cuesta:.2f}'
-		print('------------')
-		
-		#attempt to pretty up the text output by aligning it into columns
-		espacios1 = 20 - (len(nombre) + len(str_cuesta))
-		nombre_cuesta = nombre + (espacios1 * ' ') + str_cuesta
-		archivo.write(nombre_cuesta)
-		
-		espacios2 = 13 - len(fecha)
-		fecha_linda = espacios2*' ' + fecha
-		archivo.write(fecha_linda)
-		
-		str_subtotal = f'{subtotal:.2f}'
-		subtotal_linda = ' '*(14 - len(str_subtotal)) + str_subtotal + '\n'
-		archivo.write(subtotal_linda)
-		
-		recuento += 1
-		
-	impuesto = subtotal * 0.1025
-	gran_total = subtotal + impuesto
-	archivo.write(f'\n\nTienes {recuento} items.\n')
-	archivo.write(f'El impuesto a las ventas de tu compra es {impuesto}.\n')
-	archivo.write(f'El gran total de tu cuenta es {gran_total}.\n')
-	archivo.write(f'Gracias por comprar con nosotros.')
+with open('cuenta.txt', 'w') as outfile:
+    outfile.write('Item      Cuesta del item         Fecha          Subtotal \n')
+    
+    while count < 10 and item_name != 'parar':
+        print("Por favor, entras el nombre, cuesta, y fecha"
+              " de comprar por cada item. Si has terminado, entras 'parar'.")
+    
+        item_name = (input("Nombre del item: ")).lower()
+        if item_name == 'parar':
+            break
+
+        #Capitalize first letter of the item for the output file
+        item_name = item_name[0].upper() + item_name[1:]
+
+        try:    #Cost entry: Check to be sure they enter a number for cost
+            cost = float(input("Cuesta del item: "))
+        except ValueError:
+            print("Lo siento, necesitas entrar un numero por la cuesta.")
+            exit()
+
+        purchase_date = input("Fecha de comprar: ")
+
+        subtotal += cost
+        str_cost = f'{cost:.2f}'
+        print('------------')
+        
+        #Print the item details to a text file, with column alignment
+        spaces1 = 23 - (len(item_name) + len(str_cost))
+        nameandcost = f'{item_name}{spaces1 * " "} ${str_cost}'
+        outfile.write(nameandcost)
+        
+        spaces2 = 13 - len(purchase_date)
+        print_date = f'{spaces2*" "} {purchase_date}'
+        outfile.write(print_date)
+        
+        str_subtotal = f'{subtotal:.2f}'
+        print_subtotal = f'{" "*(16 - len(str_subtotal))} ${str_subtotal}\n'
+        outfile.write(print_subtotal)
+        
+        count += 1
+        
+    tax = subtotal * 0.1025
+    grand_total = subtotal + tax
+    outfile.write(f'\n{"-"*57}\n')
+    outfile.write(f'\nTienes {count} items.\n')
+    outfile.write(f'El impuesto a las ventas de tu compra es ${tax:.2f}.\n')
+    outfile.write(f'El gran total de tu cuenta es ${grand_total:.2f}.\n')
+    outfile.write(f'Gracias por comprar con nosotros.')

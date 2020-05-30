@@ -1,10 +1,11 @@
-Item          Cuesta        Fecha      Subtotal 
-Carro        5000.00       1/1/19       5000.00
-Parachoque    300.00     12/10/19       5300.00
-Faro          200.00       2/1/20       5500.00
+Item      Cuesta del item         Fecha          Subtotal 
+Carro            $5000.00        1/1/19          $5000.00
+Parachoque        $300.00        2/1/19          $5300.00
+Choque              $0.00       9/12/19          $5300.00
 
+---------------------------------------------------------
 
 Tienes 3 items.
-El impuesto a las ventas de tu compra es 563.75.
-El gran total de tu cuenta es 6063.75.
+El impuesto a las ventas de tu compra es $543.25.
+El gran total de tu cuenta es $5843.25.
 Gracias por comprar con nosotros.
