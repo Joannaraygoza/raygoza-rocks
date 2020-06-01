@@ -227,36 +227,41 @@ def find_data(chosenfile):
     rev_nums = []
     hours_sent = []
     numrevisions = 0
+    revisiontotal = 0
 
     for line in myfile:
-         #Regex expression: this one starts with any alphanumeric character, 
-         #then a bunch of any characters, then an @ symbol, then some
-         #other characters, then a period, and some more characters,
-         #and finally ends with an alpha character.
-         emails = re.findall('\w\S*@\S*\.\S*[a-zA-Z]', line)
-         if len(emails) > 0:
-             email_list.append(emails)
+        #Regex expression: this one starts with any alphanumeric character, 
+        #then a bunch of any characters, then an @ symbol, then some
+        #other characters, then a period, and some more characters,
+        #and finally ends with an alpha character.
+        emails = re.findall('\w\S*@\S*\.\S*[a-zA-Z]', line)
+        if len(emails) > 0:
+            email_list.append(emails)
          
-         #Now to find numbers on lines that start with X-DSPAM
-         dspam_num = re.findall('X-DSPAM\S*: ([0-9.]+)', line)
-         if len(dspam_num) > 0:
-             dspam_nums.append(dspam_num)
-             
-         #And now to extract the revision numbers
-         rev_num = re.findall('Details: .*rev=([0-9]+)', line)
-         if len(rev_num) > 0:
-             rev_nums.append(rev_num)
-             
-         #How about the hour the email was sent
-         hour_sent = re.findall('From .* ([0-9][0-9]):', line)
-         if len(hour_sent) > 0:
-             hours_sent.append(hour_sent)
+        #Now to find numbers on lines that start with X-DSPAM
+        dspam_num = re.findall('X-DSPAM\S*: ([0-9.]+)', line)
+        if len(dspam_num) > 0:
+            dspam_nums.append(dspam_num)
 
-         #Number of lines of the format New Revision: (number)
-         revision = re.findall('^New Revision: [0-9]*', line)
-         if len(revision) > 0:
-             numrevisions += 1
-             print(numrevisions)
+        #And now to extract the revision numbers
+        rev_num = re.findall('Details: .*rev=([0-9]+)', line)
+        if len(rev_num) > 0:
+            revisiontotal += int(rev_num[0])
+            rev_nums.append(rev_num)
+             
+        #How about the hour the email was sent
+        hour_sent = re.findall('From .* ([0-9][0-9]):', line)
+        if len(hour_sent) > 0:
+            hours_sent.append(hour_sent)
 
-    return email_list, dspam_nums, rev_nums, hours_sent
+        #Number of lines of the format New Revision: (number)
+        revision = re.findall('^New Revision: ([0-9]*)', line)
+        if len(revision) > 0:
+            numrevisions += 1
+
+    print(revisiontotal, numrevisions)
+    avg_revision = revisiontotal / numrevisions
+
+    return email_list, dspam_nums, rev_nums, hours_sent, avg_revision
 returndata = (find_data('mbox-short.txt'))
+print(int(returndata[4]))
