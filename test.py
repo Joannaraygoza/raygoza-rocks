@@ -211,7 +211,7 @@ sortedlets = letterfrequency(chosenfile)
 for item in sortedlets:
     print(*item)
 """
-
+"""
 #Using regex to find various data in the mbox files
 import string
 import re
@@ -265,3 +265,16 @@ def find_data(chosenfile):
     return email_list, dspam_nums, rev_nums, hours_sent, avg_revision
 returndata = (find_data('mbox-short.txt'))
 print(int(returndata[4]))
+"""
+import socket
+mysock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+mysock.connect(('data.pr4e.org', 80))
+cmd = 'GET http://data.pr4e.org/romeo.txt HTTP/1.0\r\n\r\n'.encode()
+mysock.send(cmd)
+
+while True:
+    data = mysock.recv(512)
+    if len(data) < 1:
+        break
+    print(data.decode(),end='')
+mysock.close()
