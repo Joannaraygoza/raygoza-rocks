@@ -266,6 +266,7 @@ def find_data(chosenfile):
 returndata = (find_data('mbox-short.txt'))
 print(int(returndata[4]))
 """
+"""
 import socket
 mysock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 mysock.connect(('data.pr4e.org', 80))
@@ -278,3 +279,31 @@ while True:
         break
     print(data.decode(),end='')
 mysock.close()
+"""
+coor1 = [[0,0],[0,5],[5,5],[5,0]]
+def checkStraightLine(coordinates):
+    xdiff = coordinates[1][0] - coordinates[0][0]
+    ydiff = coordinates[1][1] - coordinates[0][1]
+    
+    if xdiff != 0:
+        slope = ydiff/xdiff
+    else:
+        slope = "infinity"
+    print(xdiff, ydiff, slope)
+
+    prevcoordinate = coordinates[0] #implementation with a for loop
+    for coordinate in coordinates[1:]:
+        thisxdiff = coordinate[0] - prevcoordinate[0]
+        thisydiff = coordinate[1] - prevcoordinate[1]
+        if thisxdiff == 0:
+            if slope != "infinity":
+                return False
+            continue
+
+        elif abs(thisydiff / thisxdiff - slope) > 0.01:
+            return False
+        print(thisydiff/thisxdiff)
+        prevcoordinate = coordinate
+    return True
+
+print(checkStraightLine(coor1))
