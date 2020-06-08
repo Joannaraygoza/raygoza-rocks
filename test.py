@@ -210,8 +210,7 @@ chosenfile = input("What is the name of the file "
 sortedlets = letterfrequency(chosenfile)
 for item in sortedlets:
     print(*item)
-"""
-"""
+
 #Using regex to find various data in the mbox files
 import string
 import re
@@ -234,28 +233,28 @@ def find_data(chosenfile):
         #then a bunch of any characters, then an @ symbol, then some
         #other characters, then a period, and some more characters,
         #and finally ends with an alpha character.
-        emails = re.findall('\w\S*@\S*\.\S*[a-zA-Z]', line)
+        emails = re.findall(r'\w\S*@\S*\.\S*[a-zA-Z]', line)
         if len(emails) > 0:
             email_list.append(emails)
          
         #Now to find numbers on lines that start with X-DSPAM
-        dspam_num = re.findall('X-DSPAM\S*: ([0-9.]+)', line)
+        dspam_num = re.findall(r'X-DSPAM\S*: ([0-9.]+)', line)
         if len(dspam_num) > 0:
             dspam_nums.append(dspam_num)
 
         #And now to extract the revision numbers
-        rev_num = re.findall('Details: .*rev=([0-9]+)', line)
+        rev_num = re.findall(r'Details: .*rev=([0-9]+)', line)
         if len(rev_num) > 0:
             revisiontotal += int(rev_num[0])
             rev_nums.append(rev_num)
              
         #How about the hour the email was sent
-        hour_sent = re.findall('From .* ([0-9][0-9]):', line)
+        hour_sent = re.findall(r'From .* ([0-9][0-9]):', line)
         if len(hour_sent) > 0:
             hours_sent.append(hour_sent)
 
         #Number of lines of the format New Revision: (number)
-        revision = re.findall('^New Revision: ([0-9]*)', line)
+        revision = re.findall(r'^New Revision: ([0-9]*)', line)
         if len(revision) > 0:
             numrevisions += 1
 
@@ -280,30 +279,38 @@ while True:
     print(data.decode(),end='')
 mysock.close()
 """
+"""
 coor1 = [[0,0],[0,5],[5,5],[5,0]]
+
+
 def checkStraightLine(coordinates):
     xdiff = coordinates[1][0] - coordinates[0][0]
     ydiff = coordinates[1][1] - coordinates[0][1]
-    
+
     if xdiff != 0:
-        slope = ydiff/xdiff
+        slope = ydiff / xdiff
     else:
         slope = "infinity"
-    print(xdiff, ydiff, slope)
+    #print(xdiff, ydiff, slope)
 
-    prevcoordinate = coordinates[0] #implementation with a for loop
+    prevcoordinate = coordinates[0]  # implementation with a for loop
     for coordinate in coordinates[1:]:
         thisxdiff = coordinate[0] - prevcoordinate[0]
         thisydiff = coordinate[1] - prevcoordinate[1]
-        if thisxdiff == 0:
-            if slope != "infinity":
+        if slope == 'infinity':
+            if thisxdiff == 0:
+                prevcoordinate = coordinate
+                continue
+            else:
                 return False
-            continue
-
-        elif abs(thisydiff / thisxdiff - slope) > 0.01:
-            return False
-        print(thisydiff/thisxdiff)
+        elif slope != 'infinity':
+            if thisxdiff == 0:
+                return False
+            else:
+                if abs(thisydiff / thisxdiff - slope) > 0.01:
+                    return False
         prevcoordinate = coordinate
     return True
 
 print(checkStraightLine(coor1))
+"""
